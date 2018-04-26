@@ -1,0 +1,136 @@
+1、配置git
+配置用户(针对当前项目有效)
+git config user.name="ijavoracle"
+git config user.email=ijavoracle@163.com
+配置用户(针对当前用户有效)
+git config --global user.name="ijavoracle"
+git config --global user.email=ijavoracle@163.com
+查看所有配置
+git config --list
+查看user.name配置项
+git config user.name
+
+调过ssl验证
+git config --global http.sslVerify false
+
+2、帮助
+git help <cmd>, 如：git help config
+
+3、初始化仓库
+3.1在现有目录下初始化仓库
+a.进入当前目录 cd d:/git_wkspace/HelloWorld
+b.初始化 git init
+初始化后在当前目录下生成一个名为.git到子目录
+3.2 克隆现有的仓库
+git clone <url> <alias>
+git clone https://github.com/libgit2/libgit2 mylibgit
+其中alias是可选到，不写则和远程仓库名相同
+
+4、添加文件并提交到仓库
+git add src/*
+git commit -m 'initialize hello project'
+
+5、查看哪些文件处于何种状态
+git status
+
+6、添加新到跟踪文件或者把已跟踪到文件放到暂存区、或者标记文件冲突已经解决
+git add <文件or目录>
+
+7、忽略文文件
+创建名为.gitignore的文件，列出要忽略到文件模式
+
+8、比较当前版本和暂存版本
+git diff 
+比较暂存版本和仓库到版本（查看哪些改动将被commit）
+git diff -staged
+
+9、跳过使用暂存区
+使用-a参数： git commit -a -m 'commit directly, no staged'
+
+10、删除文件
+git rm <文件名>：从仓库和工作空间删除文件，如果文件字暂存区，需要使用-f参数
+git rm --cache <文件名> 从仓库删除但文件仍存在于工作空间
+
+11、文件重命名
+git mv file_from file_to
+
+12、取消暂存
+git reset HEAD <文件名>
+git reset HEAD~1   ：取消最近一次的commit
+
+13、撤销修改
+类似svn到revert功能
+git checkout -- <文件名>
+
+
+14、查看所有远程仓库
+git remote -v： -v是可选参数（verbose）。
+查看给定远程仓库的详细信息
+git remote show <remote_name>
+
+15、添加一个远程仓库
+git remote add <shortname> <url>
+git remote add origin https://github.com/ijavoracle/hello.git （预先通过web在github服务器上创建好名为hello到仓库）
+
+16、推送到远程仓库
+git push <remote_name> <branch_name>
+如果本地分支和远程分支名称不同： git push <remote> <localBranch>:<remoteBranch>
+
+17、从远程仓库拉取数据
+git fetch vs git pull
+使用git fetch从服务器抓取本地没有的数据时，它并不会修改工作目录中的内容，它只会获取数据然后让你自己合并。
+git pull 相当于先git fetch 再自动合并git merge到当前工作目录
+
+18、删除远程仓库
+git remote rm <remote_name>
+
+19、远程仓库重命名
+git remote rename old_name new_name
+
+20、理解分支到内存模型
+重要到概念：提交对象（commit object）
+
+20、创建分支
+git branch <分支名>
+该命令仅仅是创建分支，并不会自动切换到新分支
+
+21、切换分支
+git checkout <分支名>
+该命令两个作用，一是使HEAD指回<分支名>分支，二是将工作目录恢复成<分支名>分支所指向快照内容。
+在切换分支前最好要保证当前分支处于干净状态，即在工作目录和暂存区中没有需要提交到修改。
+例：git checkout testing： 切换到testing分支（使HEAD指针指向testing分支）
+
+22、查看HEAD当前指向的分支
+git log --oneline --decorate
+
+23、创建分支和切换分支在一个命令中完成
+git checkout -b <分支名>
+相当于先执行git branch <分支名>，再执行 git checkout <分支名>
+
+24、合并分支，比如把b1分支合并到master
+git checkout master //先切换到master分支
+git merge b1 //把b1分支合并进来
+
+25、删除本地分支
+git branch -d <分支名>
+删除远程分支
+git push <remote_name> --delete <branch_name>
+
+26、查看分支
+git branch 不加任何参数，得到当前所有本地分支列表
+git branch -a 查看远程分支和本地分支
+git branch -v 查看所有分支和最后一次提交信息
+git branch -vv 查看所有本地分支以及这些分支分别正在跟踪的远程分支，以及远程分支于本地分支的领先或落后情况
+
+git branch --merged 查看已经合并到当前分支到分支
+git branch --no-merged 查看包含未合并工作的分支
+
+27、避免每次输入密码
+git config --global credential.helper cache
+
+28、变基
+git rebase <base_branch> 将当前分支到修改应用到目标分支
+git rebase <base_branch> <mid_branch> <topicbranch> 找出mid_branch和topicbranch共同祖先后topicbranch上到修改，把这些修改应用到base_branch
+git rebase <base_branch> <topicbranch> 把topicbranch到修改应用到base_branch
+注意：不要对字你的仓库外有副本的分支执行变基
+
